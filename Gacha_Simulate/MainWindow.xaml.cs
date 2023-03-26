@@ -20,10 +20,11 @@ namespace Gacha_Simulate
     /// </summary>
     public partial class MainWindow : Window
     {
+        ReadData rd = new ReadData();
         public MainWindow()
         {
             InitializeComponent();
+            //Set
         }
-
     }
 }
