@@ -28,6 +28,11 @@ namespace Gacha_Simulate
         private void ConvertDynamic()
         {
             OperatorDatabase = JsonConvert.DeserializeObject(RawDataBase);
+            RawDataBase = String.Empty;
+        }
+        public void ClearDynamic()
+        {
+            OperatorDatabase = String.Empty;
         }
     }
   
