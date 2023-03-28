@@ -1,49 +1,54 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 
 namespace Gacha_Simulate
 {
     internal class Gacha
     {
-        private static dynamic item = new List<dynamic>();
+        private dynamic item = new List<dynamic>();
+        private Dictionary<string,double> name_rarity = new Dictionary<string, double>();
+        private Dictionary<double,List<string>> rarityMap = new Dictionary<double, List<string>>();
         public Gacha()
-        {
-
+        {         
         }
-        public static void Generic_Simulate()
+        public void takedata(dynamic dataop)
+        {
+            item = dataop;
+        }
+        public  void SetRarity()
         {
             //Generic Simulation just to test the waters
             //For Information: No Pity and Acces to all operators that can be headhunted
-            //Currently using Console, will convert it to be used in WPF
-
-
-            var characters = new Dictionary<string, double>();
+            //Currently using Console, will convert it to be used in WPF      
             foreach (var characterlist1 in item)
             {
-                if (characterlist1.headhunting == "Yes")
+                if (characterlist1.Value.itemObtainApproach == "Recruitment & Headhunting" && characterlist1.Value.rarity >= 2)
                 {
-                    string name = characterlist1.name;
+                    string name = characterlist1.Value.phases[0].characterPrefabKey;
                     double rarity = 0;
-                    if (characterlist1.rarity == 6)
+                    if (characterlist1.Value.rarity == 5)
                     {
                         rarity = 0.02;
                     }
-                    else if (characterlist1.rarity == 5)
+                    else if (characterlist1.Value.rarity == 4)
                     {
                         rarity = 0.08;
                     }
-                    else if (characterlist1.rarity == 4)
+                    else if (characterlist1.Value.rarity == 3)
                     {
                         rarity = 0.50;
                     }
-                    if (characterlist1.rarity == 3)
+                    if (characterlist1.Value.rarity == 2)
                     {
                         rarity = 0.40;
                     }
-                    characters.Add(name, rarity);
+                    name_rarity.Add(name, rarity);
                 }
             }
             // Create a dictionary to store the rarity and probability for each character
@@ -62,8 +67,7 @@ namespace Gacha_Simulate
             //    { "Melantha", 0.40 },
             //    { "Orchid", 0.40 }
             //};
-            var rarityMap = new Dictionary<double, List<string>>();
-            foreach (var character in characters)
+            foreach (var character in name_rarity)
             {
                 if (!rarityMap.ContainsKey(character.Value))
                 {
@@ -71,64 +75,30 @@ namespace Gacha_Simulate
                 }
 
                 rarityMap[character.Value].Add(character.Key);
-            }
-
-            while (true)
+            }                        
+        }
+        public List<string> Generic_Simulate()
+        {
+            List<string> TenPull = new List<string>();
+            var random = new Random();
+            for (int i = 0; i < 10; i++)
             {
-                Console.Clear();
-                Console.WriteLine("Test Pull: No Pity | Every Operator Available");
-                var random = new Random();
-                for (int i = 0; i < 10; i++)
+                var randomNumber = random.NextDouble();
+                var cumulativeProbability = 0.0;
+                foreach (var rarity in rarityMap.Keys)
                 {
-                    var randomNumber = 0.1;             
-                    var result = "";
-                    var cumulativeProbability = 0.0;
-                    foreach (var rarity in rarityMap.Keys)
+                    cumulativeProbability += rarity;
+                    if (randomNumber < cumulativeProbability)
                     {
-                        cumulativeProbability += rarity;
-                        if (randomNumber < cumulativeProbability)
-                        {
-                            List<string> characterList = rarityMap[rarity];
+                        List<string> characterList = rarityMap[rarity];
 
-                            var index = random.Next(characterList.Count);
-                            if (rarity == 0.02)
-                            {
-                                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                                Console.Write("******");
-                            }
-                            else if (rarity == 0.08)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Yellow;
-                                Console.Write("*****");
-                            }
-                            else if (rarity == 0.5)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Blue;
-                                Console.Write("****");
-                            }
-                            else if (rarity == 0.4)
-                            {
-                                Console.ForegroundColor = ConsoleColor.White;
-                                Console.Write("***");
-                            }
-                            result = characterList[index];
-                            break;
-                        }
+                        var index = random.Next(characterList.Count);
+                        TenPull.Add(characterList[index]);
+                        break;
                     }
-                    // Print the result
-                    Console.Write(result + "\n");
-
-                    Console.ResetColor();
-
                 }
-                Console.Write("Press [1] To Exit | Press any Key to Retry: ");
-                string UInput = Console.ReadLine();
-                if (UInput == "1")
-                {
-                    break;
-                }
-                Console.ReadLine();
             }
+            return TenPull;
         }
     }
 }
