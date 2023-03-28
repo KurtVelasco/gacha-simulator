@@ -30,25 +30,31 @@ namespace Gacha_Simulate
             InitializeComponent();
             gc.takedata(rd.OperatorDatabase);
             gc.SetRarity();
-            WriteSquare();
         }
 
         private void SimulateGeneric(object sender, RoutedEventArgs e)
         {
-            string output = string.Join(Environment.NewLine,gc.Generic_Simulate());
-            Displaypulls.Document.Blocks.Clear();
-            Displaypulls.Document.Blocks.Add(new Paragraph(new Run(output)));
+            List<string> TenPull =  new List<string>();
+            TenPull = gc.Generic_Simulate();
+            foreach(string ops in TenPull)
+            {
+                WriteSquare(ops);
+            }
+
+            //string output = string.Join(Environment.NewLine,gc.Generic_Simulate());
+            //Displaypulls.Document.Blocks.Clear();
+            //Displaypulls.Document.Blocks.Add(new Paragraph(new Run(output)));
         }
 
-        private void WriteSquare()
+        private void WriteSquare(string opname)
         {
-            // Create a BitmapImage with a white square image
+
             BitmapImage bmp = new BitmapImage();
             bmp.BeginInit();
-            bmp.UriSource = new Uri("https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/char_278_orchid_1.png");
+            bmp.UriSource = new Uri("https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/" + opname + "_1.png");
             bmp.EndInit();
 
-            // Create an Image element and set its properties
+ 
             Image img = new Image();
             img.Source = bmp;
             img.Width = 100;
