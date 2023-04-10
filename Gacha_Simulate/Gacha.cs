@@ -99,5 +99,6 @@ namespace Gacha_Simulate
             }
             return TenPull;
         }
+
     }
 }

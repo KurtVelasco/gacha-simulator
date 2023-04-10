@@ -20,6 +20,8 @@
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>
+            <Button Content="Button1" HorizontalAlignment="Left" Height="45" Margin="290,329,0,0" VerticalAlignment="Top" Width="105" Click="ClearCache"/>
+            <Label x:Name="count" Content="lmao" HorizontalAlignment="Left" Height="35" Margin="435,324,0,0" VerticalAlignment="Top" Width="155"/>
         </Grid>
     </Grid>
 
