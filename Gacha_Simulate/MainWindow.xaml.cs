@@ -25,19 +25,19 @@ namespace Gacha_Simulate
         ReadData rd = new ReadData();
         Gacha gc = new Gacha();
         private Dictionary<string, BitmapImage> imageCache = new Dictionary<string, BitmapImage>();
-        DispatcherTimer fuck = new DispatcherTimer();
+        DispatcherTimer Automate_Roll = new DispatcherTimer();
         public MainWindow()
         {
-            fuck.Interval = new TimeSpan(0, 0, 0, 0, 1000);
-            fuck.Tick += Fuck_Tick;
+            Automate_Roll.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            Automate_Roll.Tick += Automated;
             InitializeComponent();
             gc.takedata(rd.OperatorDatabase);
             gc.SetRarity();
             rd.ClearDynamic();
-            fuck.Start();
+            Automate_Roll.Start();
         }
 
-        private void Fuck_Tick(object sender, EventArgs e)
+        private void Automated(object sender, EventArgs e)
         {
             List<string> TenPull = new List<string>();
             TenPull = gc.Generic_Simulate();
@@ -67,6 +67,8 @@ namespace Gacha_Simulate
             //Displaypulls.Document.Blocks.Clear();
             //Displaypulls.Document.Blocks.Add(new Paragraph(new Run(output)));
         }
+
+
         private void WriteSquare(string opname, int x, int y)
         {
 
@@ -78,12 +80,12 @@ namespace Gacha_Simulate
             img.VerticalAlignment = VerticalAlignment.Top;
             img.HorizontalAlignment = HorizontalAlignment.Left;
             img.Margin = new Thickness(x, 0, 0, 0);
-            img.Unloaded += (s, e) => bmp.UriSource = null;
+            //img.Unloaded += (s, e) => bmp.UriSource = null;
             RollScreen.Children.Add(img);
             count.Content = imageCache.Count();
         }
-        //private void WriteSquare(string opname, int x , int y)
-        //{   
+        //private void WriteSquare(string opname, int x, int y)
+        //{
         //    Image img = new Image();
         //    BitmapImage bmp = new BitmapImage(new Uri("OpPictures/" + opname + ".png", UriKind.Relative));
         //    img.Source = bmp;
@@ -99,7 +101,7 @@ namespace Gacha_Simulate
 
         private void ClearCache(object sender, RoutedEventArgs e)
         {
-            fuck.Stop();
+            Automate_Roll.Stop();
         }
 
 
