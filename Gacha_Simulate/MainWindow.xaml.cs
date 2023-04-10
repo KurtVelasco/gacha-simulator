@@ -59,8 +59,6 @@ namespace Gacha_Simulate
             bmp.BeginInit();
             bmp.UriSource = new Uri("https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/" + opname + "_1.png");
             bmp.EndInit();
-
- 
             Image img = new Image();
             img.Source = bmp;
             img.Width = 100;
