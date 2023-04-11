@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Markup;
 
 namespace Gacha_Simulate
@@ -11,16 +15,16 @@ namespace Gacha_Simulate
     internal class Gacha
     {
         private dynamic item = new List<dynamic>();
-        private Dictionary<string,double> name_rarity = new Dictionary<string, double>();
-        private Dictionary<double,List<string>> rarityMap = new Dictionary<double, List<string>>();
+        private Dictionary<string, double> name_rarity = new Dictionary<string, double>();
+        private Dictionary<double, List<string>> rarityMap = new Dictionary<double, List<string>>();
         public Gacha()
-        {         
+        {
         }
         public void takedata(dynamic dataop)
         {
             item = dataop;
         }
-        public  void SetRarity()
+        public void SetRarity()
         {
             //Generic Simulation just to test the waters
             //For Information: No Pity and Acces to all operators that can be headhunted
@@ -74,11 +78,11 @@ namespace Gacha_Simulate
                 }
 
                 rarityMap[character.Value].Add(character.Key);
-            }                        
+            }
         }
-        public List<string> Generic_Simulate()
+        public Dictionary<double, List<string>> Generic_Simulate()
         {
-            List<string> TenPull = new List<string>();
+            Dictionary<double, List<string>> TenPull = new Dictionary<double, List<string>>();
             var random = new Random();
             for (int i = 0; i < 10; i++)
             {
@@ -90,9 +94,14 @@ namespace Gacha_Simulate
                     if (randomNumber < cumulativeProbability)
                     {
                         List<string> characterList = rarityMap[rarity];
-
                         var index = random.Next(characterList.Count);
-                        TenPull.Add(characterList[index]);
+
+                        if (!TenPull.ContainsKey(rarity))
+                        {
+                            TenPull[rarity] = new List<string>();
+                        }                       
+                        TenPull[rarity].Add(characterList[index]);
+                        
                         break;
                     }
                 }
@@ -101,4 +110,5 @@ namespace Gacha_Simulate
         }
 
     }
+
 }
